@@ -1,0 +1,164 @@
+/* General styles for the arcade vibe */
+body {
+    font-family: 'Press Start 2P', cursive;
+    background: linear-gradient(45deg, #141414, #1e1e1e);
+    color: #00d4ff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    text-align: center;
+  }
+  
+  .container {
+    max-width: 90%;
+    width: 600px;
+    padding: 20px;
+    border: 3px solid #00f0ff;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 15px #00d4ff, 0 0 30px #00f0ff;
+  }
+  
+  /* Responsive inputs and button */
+  input, button {
+    font-size: 1rem;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #00f0ff;
+    border-radius: 5px;
+    background-color: #141414;
+    color: #00d4ff;
+    outline: none;
+    width: calc(100% - 24px);
+  }
+  
+  button {
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+  
+  button:hover {
+    transform: scale(1.1);
+    background-color: #00f0ff;
+    color: #141414;
+  }
+  
+  /* Magic Eight Ball */
+  .eight-ball {
+    margin: 20px auto;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle at 50% 50%, #000, #222);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 20px #00f0ff, 0 0 40px #00d4ff;
+    animation: pulse-ball 1.5s infinite;
+  }
+  
+  @keyframes pulse-ball {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+  
+  .eight-ball.shake {
+    animation: shake-ball 0.5s linear;
+  }
+  
+  @keyframes shake-ball {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-10px);
+    }
+    75% {
+      transform: translateX(10px);
+    }
+  }
+  
+  /* Responsive response text */
+  #response {
+    font-size: 1.2rem;
+    color: #00d4ff;
+    text-shadow: 0 0 5px #00d4ff, 0 0 15px #00f0ff;
+    white-space: normal;
+    overflow: hidden;
+    border: none;
+    margin-top: 20px;
+  }
+  
+  /* Avatar */
+  #avatar {
+    margin: 20px auto;
+    width: 80px;
+    height: 80px;
+    background: url('https://i.imgur.com/LjVIK73.png') no-repeat center/cover;
+    animation: pulse-avatar 1.5s infinite;
+  }
+  
+  @keyframes pulse-avatar {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+  
+  /* Media Queries for Responsiveness */
+  @media (max-width: 600px) {
+    .container {
+      padding: 10px;
+    }
+  
+    input, button {
+      font-size: 0.9rem;
+      padding: 8px;
+    }
+  
+    .eight-ball {
+      width: 120px;
+      height: 120px;
+    }
+  
+    #response {
+      font-size: 1rem;
+    }
+  
+    #avatar {
+      width: 60px;
+      height: 60px;
+    }
+  }
+  
+  @media (max-width: 400px) {
+    input, button {
+      font-size: 0.8rem;
+      padding: 5px;
+    }
+  
+    .eight-ball {
+      width: 100px;
+      height: 100px;
+    }
+  
+    #response {
+      font-size: 0.9rem;
+    }
+  
+    #avatar {
+      width: 50px;
+      height: 50px;
+    }
+  }
+  
