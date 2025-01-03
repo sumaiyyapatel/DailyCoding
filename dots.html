@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dots Game</title>
+    <style>
+        canvas {
+            border: 2px solid #333;
+            background: #f0f0f0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem;
+        }
+        .score {
+            font-size: 1.5rem;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="score">
+            Player 1: <span id="score1">0</span> | 
+            Player 2: <span id="score2">0</span>
+        </div>
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <div>Current Player: <span id="currentPlayer">1</span></div>
+    </div>
+
+    <script>
+        class DotsGame {
+            constructor() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.gridSize = 6;
+                this.spacing = this.canvas.width / (this.gridSize + 1);
+                this.dots = this.createDots();
+                this.lines = [];
+                this.boxes = [];
+                this.currentPlayer = 1;
+                this.scores = [0, 0];
+                
+                this.canvas.addEventListener('click', (e) => this.handleClick(e));
+                this.drawGrid();
+            }
+
+            createDots() {
+                const dots = [];
+                for (let i = 0; i < this.gridSize; i++) {
+                    for (let j = 0; j < this.gridSize; j++) {
+                        dots.push({
+                            x: (j + 1) * this.spacing,
+                            y: (i + 1) * this.spacing
+                        });
+                    }
+                }
+                return dots;
+            }
+
+            drawGrid() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw lines
+                this.lines.forEach(line => {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(line.start.x, line.start.y);
+                    this.ctx.lineTo(line.end.x, line.end.y);
+                    this.ctx.strokeStyle = '#333';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.stroke();
+                });
+
+                // Draw boxes
+                this.boxes.forEach(box => {
+                    this.ctx.fillStyle = box.player === 1 ? 'rgba(255,0,0,0.3)' : 'rgba(0,0,255,0.3)';
+                    this.ctx.fillRect(
+                        box.x - this.spacing/2,
+                        box.y - this.spacing/2,
+                        this.spacing,
+                        this.spacing
+                    );
+                });
+
+                // Draw dots
+                this.dots.forEach(dot => {
+                    this.ctx.beginPath();
+                    this.ctx.arc(dot.x, dot.y, 5, 0, Math.PI * 2);
+                    this.ctx.fillStyle = '#333';
+                    this.ctx.fill();
+                });
+            }
+
+            findClosestDot(x, y) {
+                return this.dots.reduce((closest, dot) => {
+                    const distance = Math.hypot(dot.x - x, dot.y - y);
+                    return distance < closest.distance ? { dot, distance } : closest;
+                }, { dot: null, distance: Infinity });
+            }
+
+            handleClick(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const { dot: closestDot, distance } = this.findClosestDot(x, y);
+                
+                if (distance > 30) return;
+
+                if (!this.selectedDot) {
+                    this.selectedDot = closestDot;
+                    return;
+                }
+
+                if (this.selectedDot === closestDot) {
+                    this.selectedDot = null;
+                    return;
+                }
+
+                if (this.isValidLine(this.selectedDot, closestDot)) {
+                    this.addLine(this.selectedDot, closestDot);
+                    const boxesMade = this.checkForBoxes();
+                    
+                    if (!boxesMade) {
+                        this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
+                        document.getElementById('currentPlayer').textContent = this.currentPlayer;
+                    }
+                    
+                    this.updateScores();
+                }
+
+                this.selectedDot = null;
+                this.drawGrid();
+            }
+
+            isValidLine(start, end) {
+                const dx = Math.abs(this.dots.indexOf(start) % this.gridSize - 
+                                 this.dots.indexOf(end) % this.gridSize);
+                const dy = Math.abs(Math.floor(this.dots.indexOf(start) / this.gridSize) - 
+                                 Math.floor(this.dots.indexOf(end) / this.gridSize));
+                
+                if ((dx === 1 && dy === 0) || (dx === 0 && dy === 1)) {
+                    return !this.lines.some(line =>
+                        (line.start === start && line.end === end) ||
+                        (line.start === end && line.end === start)
+                    );
+                }
+                return false;
+            }
+
+            addLine(start, end) {
+                this.lines.push({ start, end });
+            }
+
+            checkForBoxes() {
+                const boxesMade = false;
+                const potentialBoxes = [];
+
+                this.dots.forEach((dot, idx) => {
+                    const row = Math.floor(idx / this.gridSize);
+                    const col = idx % this.gridSize;
+
+                    if (row < this.gridSize - 1 && col < this.gridSize - 1) {
+                        const topLeft = dot;
+                        const topRight = this.dots[idx + 1];
+                        const bottomLeft = this.dots[idx + this.gridSize];
+                        const bottomRight = this.dots[idx + this.gridSize + 1];
+
+                        if (this.hasAllLines(topLeft, topRight, bottomLeft, bottomRight)) {
+                            const centerX = topLeft.x + this.spacing / 2;
+                            const centerY = topLeft.y + this.spacing / 2;
+                            
+                            if (!this.boxes.some(box => box.x === centerX && box.y === centerY)) {
+                                this.boxes.push({
+                                    x: centerX,
+                                    y: centerY,
+                                    player: this.currentPlayer
+                                });
+                                return true;
+                            }
+                        }
+                    }
+                });
+
+                return boxesMade;
+            }
+
+            hasAllLines(topLeft, topRight, bottomLeft, bottomRight) {
+                return this.hasLine(topLeft, topRight) &&
+                       this.hasLine(topLeft, bottomLeft) &&
+                       this.hasLine(topRight, bottomRight) &&
+                       this.hasLine(bottomLeft, bottomRight);
+            }
+
+            hasLine(start, end) {
+                return this.lines.some(line =>
+                    (line.start === start && line.end === end) ||
+                    (line.start === end && line.end === start)
+                );
+            }
+
+            updateScores() {
+                this.scores = [0, 0];
+                this.boxes.forEach(box => {
+                    this.scores[box.player - 1]++;
+                });
+                document.getElementById('score1').textContent = this.scores[0];
+                document.getElementById('score2').textContent = this.scores[1];
+            }
+        }
+
+        new DotsGame();
+    </script>
+</body>
+</html>
