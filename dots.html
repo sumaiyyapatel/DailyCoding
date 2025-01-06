@@ -34,17 +34,22 @@
 
     <script>
         class DotsGame {
-            constructor() {
-                this.canvas = document.getElementById('gameCanvas');
-                this.ctx = this.canvas.getContext('2d');
-                this.gridSize = 6;
-                this.spacing = this.canvas.width / (this.gridSize + 1);
-                this.dots = this.createDots();
+            constructor(gridSize, spacing) {
+                this.gridSize = gridSize;
+                this.spacing = spacing;
+                this.dots = [];
                 this.lines = [];
                 this.boxes = [];
-                this.currentPlayer = 1;
                 this.scores = [0, 0];
-                
+                this.currentPlayer = 1;
+                this.selectedDot = null;
+                this.init();
+            }
+
+            init() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.dots = this.createDots();
                 this.canvas.addEventListener('click', (e) => this.handleClick(e));
                 this.drawGrid();
             }
@@ -90,7 +95,7 @@
                 this.dots.forEach(dot => {
                     this.ctx.beginPath();
                     this.ctx.arc(dot.x, dot.y, 5, 0, Math.PI * 2);
-                    this.ctx.fillStyle = '#333';
+                    this.ctx.fillStyle = this.selectedDot === dot ? '#ff0000' : '#333';
                     this.ctx.fill();
                 });
             }
@@ -113,17 +118,19 @@
 
                 if (!this.selectedDot) {
                     this.selectedDot = closestDot;
+                    this.drawGrid();
                     return;
                 }
 
                 if (this.selectedDot === closestDot) {
                     this.selectedDot = null;
+                    this.drawGrid();
                     return;
                 }
 
                 if (this.isValidLine(this.selectedDot, closestDot)) {
                     this.addLine(this.selectedDot, closestDot);
-                    const boxesMade = this.checkForBoxes();
+                    const boxesMade = this.checkForCompletedBoxes();
                     
                     if (!boxesMade) {
                         this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
@@ -156,39 +163,6 @@
                 this.lines.push({ start, end });
             }
 
-            checkForBoxes() {
-                const boxesMade = false;
-                const potentialBoxes = [];
-
-                this.dots.forEach((dot, idx) => {
-                    const row = Math.floor(idx / this.gridSize);
-                    const col = idx % this.gridSize;
-
-                    if (row < this.gridSize - 1 && col < this.gridSize - 1) {
-                        const topLeft = dot;
-                        const topRight = this.dots[idx + 1];
-                        const bottomLeft = this.dots[idx + this.gridSize];
-                        const bottomRight = this.dots[idx + this.gridSize + 1];
-
-                        if (this.hasAllLines(topLeft, topRight, bottomLeft, bottomRight)) {
-                            const centerX = topLeft.x + this.spacing / 2;
-                            const centerY = topLeft.y + this.spacing / 2;
-                            
-                            if (!this.boxes.some(box => box.x === centerX && box.y === centerY)) {
-                                this.boxes.push({
-                                    x: centerX,
-                                    y: centerY,
-                                    player: this.currentPlayer
-                                });
-                                return true;
-                            }
-                        }
-                    }
-                });
-
-                return boxesMade;
-            }
-
             hasAllLines(topLeft, topRight, bottomLeft, bottomRight) {
                 return this.hasLine(topLeft, topRight) &&
                        this.hasLine(topLeft, bottomLeft) &&
@@ -211,9 +185,38 @@
                 document.getElementById('score1').textContent = this.scores[0];
                 document.getElementById('score2').textContent = this.scores[1];
             }
+
+            checkForCompletedBoxes() {
+                let boxesMade = false;
+                this.dots.forEach((dot, idx) => {
+                    if (idx % this.gridSize < this.gridSize - 1 && idx < this.dots.length - this.gridSize) {
+                        const topLeft = dot;
+                        const topRight = this.dots[idx + 1];
+                        const bottomLeft = this.dots[idx + this.gridSize];
+                        const bottomRight = this.dots[idx + this.gridSize + 1];
+
+                        if (this.hasAllLines(topLeft, topRight, bottomLeft, bottomRight)) {
+                            const centerX = topLeft.x + this.spacing / 2;
+                            const centerY = topLeft.y + this.spacing / 2;
+
+                            if (!this.boxes.some(box => box.x === centerX && box.y === centerY)) {
+                                this.boxes.push({
+                                    x: centerX,
+                                    y: centerY,
+                                    player: this.currentPlayer
+                                });
+                                boxesMade = true;
+                            }
+                        }
+                    }
+                });
+                return boxesMade;
+            }
         }
 
-        new DotsGame();
+        const gridSize = 6;
+        const spacing = 400 / (gridSize + 1);
+        new DotsGame(gridSize, spacing);
     </script>
 </body>
 </html>
