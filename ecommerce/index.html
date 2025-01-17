@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Couture</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Preserve styles from ecommerce.html */
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #c9a77c;
+            --text-color: #333333;
+            --background-color: #ffffff;
+            --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        body {
+            background-color: var(--background-color);
+            font-family: 'Helvetica Neue', sans-serif;
+            color: var(--text-color);
+        }
+        .navbar {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-size: 1.8rem;
+            letter-spacing: 0.15em;
+            color: var(--primary-color) !important;
+        }
+        .hero-section {
+            background-color: #f8f9fa;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        .product-card {
+            border: none;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+        .product-card img {
+            height: 400px;
+            object-fit: cover;
+            filter: brightness(0.95);
+            transition: var(--transition);
+        }
+        .product-card:hover img {
+            filter: brightness(1);
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">Riwayat Couture</a>
+            <div class="d-flex">
+                <a href="about.html" class="btn btn-outline-dark me-2">About Us</a>
+                <a href="#products" class="btn btn-outline-dark">Products</a>
+            </div>
+        </div>
+    </nav>
+    <section class="hero-section">
+        <h1>Welcome to Riwayat Couture</h1>
+        <p>Discover the finest collection of fashion and jewellery, crafted to perfection.</p>
+    </section>
+    <main class="container py-5">
+        <h2 class="text-center mb-4">Our Products</h2>
+        <div class="row g-4" id="products-grid">
+            <div class="col-md-4">
+                <div class="product-card">
+                    <img src="images/necklace.jpg" alt="Elegant Necklace">
+                    <div class="card-body">
+                        <h3>Elegant Necklace</h3>
+                        <p class="text-secondary">$120.00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="product-card">
+                    <img src="images/ring.jpg" alt="Diamond Ring">
+                    <div class="card-body">
+                        <h3>Diamond Ring</h3>
+                        <p class="text-secondary">$250.00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="product-card">
+                    <img src="images/bracelet.jpg" alt="Gold Bracelet">
+                    <div class="card-body">
+                        <h3>Gold Bracelet</h3>
+                        <p class="text-secondary">$180.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2023 Riwayat Couture. All rights reserved.</p>
+    </footer>
+</body>
+</html>
