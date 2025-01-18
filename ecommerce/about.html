@@ -5,53 +5,263 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Riwayat Couture</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Use styles consistent with ecommerce.html */
-        :root {
-            --primary-color: #1a1a1a;
-            --text-color: #333333;
-        }
-        body {
-            font-family: 'Helvetica Neue', sans-serif;
-            color: var(--text-color);
-        }
-        .navbar {
-            padding: 1.5rem 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-        .navbar-brand {
-            font-size: 1.8rem;
-            letter-spacing: 0.15em;
-            color: var(--primary-color) !important;
-        }
-        .about-section {
-            padding: 4rem 2rem;
-        }
-        footer {
+        /* [Previous shared styles remain the same] */
+        
+        .about-hero {
+            height: 60vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
             text-align: center;
-            padding: 1rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 4rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background-color: var(--secondary-color);
+        }
+
+        .timeline-item {
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 2rem;
+            background-color: white;
+            box-shadow: var(--card-shadow);
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            left: -60px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            right: -60px;
+        }
+
+        .team-section {
+            padding: 4rem 0;
             background-color: #f8f9fa;
+        }
+
+        .team-member {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .team-member img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            object-fit: cover;
+        }
+
+        .values-section {
+            padding: 4rem 0;
+        }
+
+        .value-card {
+            text-align: center;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .value-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .value-card i {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">Riwayat Couture</a>
+    <!-- [Navbar remains the same as in index.html] -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Riwayat Couture</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="shop.html">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
-    <section class="about-section container">
-        <h1>About Us</h1>
-        <p>
-            At Riwayat Couture, we combine tradition and innovation to deliver exquisite jewellery and fashion. 
-            Our family-owned business boasts 20 years of excellence and artistry.
-        </p>
-        <p>
-            We are committed to providing our customers with unique, high-quality pieces that inspire confidence and elegance.
-        </p>
+
+    <section class="about-hero">
+        <div class="container">
+            <h1>Our Story</h1>
+            <p class="lead">Crafting elegance since 2003</p>
+        </div>
     </section>
-    <footer>
-        <p>&copy; 2023 Riwayat Couture. All rights reserved.</p>
+
+    <section class="timeline">
+        <div class="container">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>2003</h3>
+                    <p>Founded in Paris with a vision to create timeless pieces</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>2008</h3>
+                    <p>Expanded to international markets, opening our first flagship store in London</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>2013</h3>
+                    <p>Launched our sustainable fashion initiative and eco-friendly collection</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>2018</h3>
+                    <p>Celebrated 15 years with our Heritage Collection launch</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>2023</h3>
+                    <p>Introducing digital innovation and personalized shopping experiences</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="values-section">
+        <div class="container">
+            <h2 class="text-center mb-5">Our Values</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="value-card">
+                        <i class="fas fa-gem"></i>
+                        <h3>Quality</h3>
+                        <p>Unwavering commitment to craftsmanship and excellence</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="value-card">
+                        <i class="fas fa-leaf"></i>
+                        <h3>Sustainability</h3>
+                        <p>Responsible fashion that respects our environment</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="value-card">
+                        <i class="fas fa-heart"></i>
+                        <h3>Innovation</h3>
+                        <p>Blending tradition with modern design</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-section">
+        <div class="container">
+            <h2 class="text-center mb-5">Meet Our Team</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="team-member">
+                        <img src="/api/placeholder/200/200" alt="Team Member">
+                        <h3>Sophie Laurent</h3>
+                        <p>Creative Director</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="team-member">
+                        <img src="/api/placeholder/200/200" alt="Team Member">
+                        <h3>Marco Rossi</h3>
+                        <p>Head Designer</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="team-member">
+                        <img src="/api/placeholder/200/200" alt="Team Member">
+                        <h3>Emma Chen</h3>
+                        <p>Art Director</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- [Footer remains the same as in index.html] -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>&copy; 2023 Riwayat Couture. All rights reserved.</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#" class="text-white">Privacy Policy</a></li>
+                <li class="list-inline-item"><a href="#" class="text-white">Terms of Service</a></li>
+                <li class="list-inline-item"><a href="#" class="text-white">Contact Us</a></li>
+            </ul>
+        </div>
     </footer>
+
+    <script>
+        // Animation on scroll
+        window.addEventListener('scroll', function() {
+            const elements = document.querySelectorAll('.timeline-content, .value-card, .team-member');
+            elements.forEach(element => {
+                const position = element.getBoundingClientRect();
+                if(position.top < window.innerHeight * 0.8) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
